@@ -6,7 +6,7 @@
       </div>
       <div class="content">
         <h3>
-          <router-link to="/job-detail">{{ job.name }}</router-link>
+          <router-link :to="{name:'jobDetail', query:{id:job.id}}">{{ job.name }}</router-link>
         </h3>
         <div class="tags">
           <i class="lni-map-marker"></i> Quận {{ job.location }}

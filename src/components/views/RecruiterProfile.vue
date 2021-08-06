@@ -158,12 +158,12 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr v-for="(job, index) in list" v-bind:key="index" v-bind:job="job">
-                            <td> {{job.name}} </td>
-                            <td> {{job.createDate}} </td>
-                            <td v-if="status == 1"> Chưa duyệt </td>
-                            <td v-else> Đã duyệt </td>
-                          </tr>
+                                <tr v-for="(job, index) in list" v-bind:key="index" v-bind:job="job" v-on:click="redirectToListCV(job.id)">
+                                  <td> {{job.name}} </td>
+                                  <td> {{job.createDate}} </td>
+                                  <td v-if="status == 1"> Chưa duyệt </td>
+                                  <td v-else> Đã duyệt </td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -201,14 +201,14 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <!-- <tr v-for="(list, index) in list" v-bind:key="index" v-bind:job="job"> -->
-                                        <!-- <td>
+                                 <tr v-for="(list, index) in list" v-bind:key="index" v-bind:job="job">
+                                         <td>
                                             <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="">
                                             <a href="#" class="user-link">George Clooney</a>
                                             <span class="user-subhead">Member</span>
-                                        </td> -->
-                                        <!-- <td>
-                                            {{list.}}
+                                        </td>
+                                         <td>
+<!--                                            {{list.}}-->
                                         </td>
                                        <td>
                                             Front end
@@ -220,7 +220,7 @@
                                             <a href="#" class="table-link">
                                                 <span class="fa-stack">
                                                     <button class="fa fa-check-circle" style=" font-size:36px; color: green; border: none"></button>
-                                                    
+
                                                 </span>
                                             </a>
                                             <a href="#" class="table-link">
@@ -228,9 +228,9 @@
                                                     <button class="fa fa-times-circle" style="font-size:36px; color: red; border: none"></button>
                                                 </span>
                                             </a>
-                                           
+
                                         </td>
-                                    </tr> -->
+                                    </tr>
                               </tbody>
                             </table>
                           </div>
@@ -271,6 +271,9 @@ export default {
     countPendingJob() {
       const count = this.list.filter((obj) => obj.status == 1).length;
       return count;
+    },
+    redirectToListCV(id) {
+      this.$router.push({ path: 'candidate-list', query: { id: id } })
     }
   },
   mounted() {

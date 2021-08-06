@@ -49,6 +49,15 @@
           </div>
           <div class="col-lg-4 col-md-12 col-xs-12">
             <div class="sideber">
+              <div class="widghet" v-if="!isShowInfo">
+                <h3>THÔNG TIN TUYỂN DỤNG</h3>
+                <button
+                    @click.prevent="details"
+                    class="btn btn-common log-btn"
+                >
+                  Chi tiết
+                </button>
+              </div>
               <div class="widghet" v-if="isShowInfo">
                 <h3>THÔNG TIN TUYỂN DỤNG</h3>
                 <li>
@@ -106,6 +115,7 @@
         <button
             type="button"
             class="btn btn-primary"
+            @click.prevent="saveJob"
         >
           Lưu việc
         </button>
@@ -133,6 +143,29 @@
                 <button
                   @click.prevent="accept"
                   class="btn btn-common log-btn"
+                >
+                  Xác nhận
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+            class="modal fade"
+            id="saveJobMessage"
+            tabindex="-1"
+            aria-labelledby="saveJobMessageLabel"
+            aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <ul class="body-desc">
+                  <li>Lưu việc thành công. Vui lòng kiểm tra trong danh sách đã lưu.</li>
+                </ul>
+                <button
+                    class="btn btn-common log-btn"
+                    data-bs-dismiss="modal"
                 >
                   Xác nhận
                 </button>
@@ -168,6 +201,7 @@ export default {
       id: "",
       studentProfile: "",
       isShowInfo: false,
+      token: "",
     };
   },
   components: {},
@@ -175,8 +209,8 @@ export default {
     if (localStorage.getItem("studentProfile")) {
       this.studentProfile = JSON.parse(localStorage.getItem("studentProfile"));
     }
-    const token = localStorage.getItem("token");
-    if (token) {
+    this.token = localStorage.getItem("token")
+    if (this.token) {
       this.isShowInfo = true;
     }
     axios
@@ -188,11 +222,10 @@ export default {
   methods: {
     // method ko nên dùng async
     applyJob() {
-      const token = localStorage.getItem("token");
-      if (token) {
+      if (this.token) {
         const header = {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${this.token}`,
         };
         const data = {
           id: Number(this.$route.query.id),
@@ -216,6 +249,36 @@ export default {
     accept() {
       // this.$router.push('student-profile');
     },
+    saveJob() {
+      if (this.token) {
+        const header = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.token}`,
+        };
+        const data = {
+          jobId: Number(this.$route.query.id),
+        };
+        console.log(data);
+        axios
+            .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/save", data, {
+              headers: header,
+            })
+            .then(() => {
+              // eslint-disable-next-line no-undef
+              $("#saveJobMessage").modal("show");
+            })
+            .catch((e) => {
+              console.log(e.response);
+              const { message } = e.response.data;
+              alert(message.toString());
+            });
+      } else {
+        alert("Bạn cần đăng nhập để nộp đơn!");
+      }
+    },
+    details() {
+      alert("Bạn cần đăng nhập để xem thông tin chi tiết");
+    }
   },
 };
 </script>

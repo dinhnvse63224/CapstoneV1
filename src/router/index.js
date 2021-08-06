@@ -7,6 +7,8 @@ import Contact from '../components/views/Contact.vue'
 import StudentLogin from '../components/views/StudentLogin.vue'
 import StudentProfile from '../components/views/StudentProfile.vue'
 import StudentUpdateCV from '../components/views/StudentUpdateCV.vue'
+import CandidateList from  '../components/views/CandidateList.vue'
+import StudentDetailCV from "../components/views/StudentDetailCV"
 
 import JobDetail from '../components/views/JobDetail.vue'
 
@@ -80,6 +82,14 @@ const router = new VueRouter({
     {
       path: '/recruiter-edit-profile',
       component: RecruiterProfileEdit,
+    },
+    {
+      path: '/candidate-list',
+      component: CandidateList,
+    },
+    {
+      path: '/detail-cv',
+      component: StudentDetailCV,
     }
   ]
 })

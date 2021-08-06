@@ -6,7 +6,7 @@
       </div>
       <div class="content">
         <h3>
-          <router-link to="/job-detail">{{ job.name }}</router-link>
+          <router-link :to="{name:'jobDetail', query:{id:job.id}}">{{ job.name }}</router-link>
         </h3>
         <p class="brand">{{ job.brand }}</p>
         <p class="major" hidden>{{ job.major }}</p>

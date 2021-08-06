@@ -33,7 +33,7 @@
               class="d-flex flex-column align-items-center px-lg-3 px-md-2 px-1"
               id="border-right"
             >
-              <p class="h4">0</p>
+              <p class="h4">{{ listSaved.length }}</p>
               <div class="text-muted" id="count">Việc làm đã lưu</div>
             </div>
             <div
@@ -163,7 +163,19 @@
                                   <th>Hình thức</th>
                                 </tr>
                               </thead>
-                              <tbody></tbody>
+                              <tbody>
+                              <tr
+                                  v-for="(job, index) in listSaved"
+                                  v-bind:key="index"
+                                  v-bind:job="job"
+                              >
+                                <td>{{ job.name }}</td>
+                                <td v-if="workingForm == 1"> Full time </td>
+                                <td v-else> Part time </td>
+                                <td> {{job.location}}</td>
+                                <td></td>
+                              </tr>
+                              </tbody>
                             </table>
                           </div>
                         </div>
@@ -275,6 +287,7 @@ export default {
       studentProfile: [],
       studentCv: {},
       list: [],
+      listSaved: [],
       job: {
         type: Object,
         default: null,
@@ -306,6 +319,16 @@ export default {
       })
       .then((response) => {
         this.list = response.data.data;
+      });
+
+    axios
+      .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/saved-jobs", {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
+      .then((response) => {
+        this.listSaved = response.data.data;
       });
   },
 };
