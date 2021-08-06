@@ -5,7 +5,7 @@
         <img v-bind:src="job.image" />
       </div>
       <div class="content">
-        <h3>
+        <h3 class="job-name">
            <router-link :to="{name:'jobDetail', query:{id:job.id}}">{{ job.name }}</router-link>
         </h3>
         <p class="major" hidden>{{ job.major }}</p>
@@ -41,4 +41,11 @@ export default {
 </script>
 
 <style>
+.job-name {
+  overflow: hidden;
+  width: 90%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
 </style>
