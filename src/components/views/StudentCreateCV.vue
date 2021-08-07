@@ -59,6 +59,12 @@
               </div>
             </div>
             <div class="row mt-3">
+              <div class="col-md-8">
+                <label class="labels">Kỹ năng*</label>
+                <input type="text" class="form-control" v-model="skill" />
+              </div>
+            </div>
+            <div class="row mt-3">
               <div class="col-md-7">
                 <label class="labels">Kinh nghiệm*</label>
                 <input type="text" class="form-control" v-model="experience" />
@@ -130,6 +136,7 @@ export default {
       sex: "",
       school: "",
       experience: "",
+      skill: "",
       foreignLanguage: "",
       desiredSalaryMinimum: "",
       workingForm: "",
@@ -159,7 +166,8 @@ export default {
       this.cvName = cv.cvName;
       this.name = cv.name;
       this.dob = cv.dob;
-      this.sex = cv.sex;
+      this.sex = cv.sex
+      this.skill = cv.skill
       this.school = cv.school;
       this.experience = cv.experience;
       this.foreignLanguage = cv.foreignLanguage;
@@ -188,6 +196,7 @@ export default {
           dob: moment(this.dob).format('YYYY-MM-DD'),
           school: this.school,
           experience: this.experience,
+          skill: this.skill,
           foreignLanguage: this.foreignLanguage,
           desiredSalaryMinimum: this.desiredSalaryMinimum,
           workingForm: this.workingForm,
@@ -200,6 +209,7 @@ export default {
           dob: this.dob,
           school: this.school,
           experience: this.experience,
+          skill: this.skill,
           foreignLanguage: this.foreignLanguage,
           desiredSalaryMinimum: this.desiredSalaryMinimum,
           workingForm: this.workingForm,

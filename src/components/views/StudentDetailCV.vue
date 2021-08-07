@@ -66,6 +66,9 @@
                     <label class="labels">Trường học: {{ studentCv.school }}</label>
                   </div>
                   <div class="col-md-12">
+                    <label class="labels">Kinh nghiệm: {{ studentCv.skill }}</label>
+                  </div>
+                  <div class="col-md-12">
                     <label class="labels">Kinh nghiệm: {{ studentCv.experience }}</label>
                   </div>
                   <div class="col-md-12">

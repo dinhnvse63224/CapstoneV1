@@ -302,7 +302,7 @@ export default {
             },
           }
         ).then((response) => {
-          if (response.data.data() !== null) {
+          if (response.data.data !== null) {
             this.list = response.data.data;
           }
         })
