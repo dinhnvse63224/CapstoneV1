@@ -84,7 +84,7 @@
               data-toggle="tab"
               role="tab"
             >
-              Danh sách ứng tuyển
+              Thông tin công ty
             </a>
           </li>
         </ul>
@@ -184,60 +184,46 @@
             aria-labelledby="job-applied"
           >
             <div class="container rounded-bottom bg-light">
-              <div class="container h-100">
-                <div class="row">
-                  <div class="card-body text-center">
-                    <div class="card">
-                      <div class="col-md-12 py-md-4">
-                        <div class="right">
-                          <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                              <thead>
-                                <tr class="align-self-center">
-                                  <th><span>Người ứng tuyển</span></th>
-                                  <th><span>Ngày ứng tuyển</span></th>
-                                  <th><span>Công việc</span></th>
-                                  <th><span>Email</span></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                 <tr v-for="(list, index) in list" v-bind:key="index" v-bind:job="job">
-                                         <td>
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="">
-                                            <a href="#" class="user-link">George Clooney</a>
-                                            <span class="user-subhead">Member</span>
-                                        </td>
-                                         <td>
-<!--                                            {{list.}}-->
-                                        </td>
-                                       <td>
-                                            Front end
-                                        </td>
-                                        <td>
-                                            <a href="#">Testbrando.com</a>
-                                        </td>
-                                        <td style="width: 20%;">
-                                            <a href="#" class="table-link">
-                                                <span class="fa-stack">
-                                                    <button class="fa fa-check-circle" style=" font-size:36px; color: green; border: none"></button>
-
-                                                </span>
-                                            </a>
-                                            <a href="#" class="table-link">
-                                                <span class="fa-stack">
-                                                    <button class="fa fa-times-circle" style="font-size:36px; color: red; border: none"></button>
-                                                </span>
-                                            </a>
-
-                                        </td>
-                                    </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                        <!--end table-responsive-->
-                      </div>
-                    </div>
+              <div class="d-flex flex-row" v-if="!hasCompany">
+                <div class="btn border-primary text-primary selected-tab">
+                  <router-link to="/company">
+                    Tạo mới công ty</router-link
+                  >
+                </div>
+              </div>
+              <div class="d-flex flex-row" v-if="hasCompany">
+                <div class="btn border-primary text-primary selected-tab">
+                  <router-link to="/company">
+                    Cập nhật công ty</router-link
+                  >
+                </div>
+              </div>
+              <div class="left">
+                <div class="row mt-2" v-if="!hasCompany">
+                  <div class="col-md-8">
+                    <label class="labels">Bạn là nhà tuyển dụng tư nhân</label>
+                  </div>
+                </div>
+                <div class="row mt-2" v-if="hasCompany">
+                  <div class="col-md-8">
+                    <img :src="company.avatar" width="200" height="200">
+                  </div>
+                  <div class="col-md-8">
+                    <label class="labels">Tên công ty: {{company.name}}</label>
+                  </div>
+                  <div class="col-md-8">
+                    <label class="labels">Địa chỉ: {{company.headquaters}}</label>
+                  </div>
+                  <div class="col-md-8">
+                    <label class="labels">Website: {{company.website}}</label>
+                  </div>
+                  <div class="col-md-8">
+                    <label class="labels">Mô tả: {{company.description}}</label>
+                  </div>
+                  <div class="col-md-8">
+                    <label class="labels">Chỉnh sửa avarta công ty
+                      <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                    </label>
                   </div>
                 </div>
               </div>
@@ -260,10 +246,32 @@ export default {
       job: {
         type: Object,
         default: null,
-      }
+      },
+      hasCompany: true,
+      company: "",
+      file: ""
     };
   },
   methods: {
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+      var formData = new FormData();
+      formData.append("avatar", this.file);
+      axios.post(
+          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/company/upload-image", formData,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+              'Content-Type': 'multipart/form-data'
+            },
+          }
+      ).then((response) => {
+        console.log(response);
+        window.location.reload();
+      }).catch((e) => {
+        console.log(e.response);
+      })
+    },
     countApproveJob() {
       const count = this.list.filter((obj) => obj.status == 2).length;
       return count;
@@ -285,7 +293,7 @@ export default {
       this.token = localStorage.getItem("token");
     }
 
-     axios
+    axios
         .get(
           "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/posted-jobs",
           {
@@ -294,8 +302,26 @@ export default {
             },
           }
         ).then((response) => {
-          this.list = response.data.data;
-        }) 
+          if (response.data.data() !== null) {
+            this.list = response.data.data;
+          }
+        })
+    axios.get(
+          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/company/self",
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        ).then((response) => {
+          this.company = response.data.data;
+      console.log(this.company);
+    }).catch((e) => {
+          if (e.response.status === 404) {
+            this.hasCompany = false;
+            console.log(this.hasCompany);
+          }
+    })
   },
 };
 </script>

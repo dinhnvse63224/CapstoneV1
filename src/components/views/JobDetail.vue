@@ -36,11 +36,11 @@
           <div class="col-lg-8 col-md-12 col-xs-12">
             <div class="content-area">
               <h4>MÔ TẢ CÔNG VIỆC</h4>
-              <li>{{ job.description }}</li>
+              <span v-html="job.description"></span>
               <h5>YÊU CẦU CÔNG VIỆC</h5>
-              <li>{{ job.requirement }}</li>
+              <span v-html="job.requirement"></span>
               <h5>QUYỀN LỢI ĐƯỢC HƯỞNG</h5>
-              <li>{{ job.offer }}</li>
+              <span v-html="job.offer"></span>
               <br />
 <!--              <router-link href="#" class="btn btn-common"-->
 <!--                >Apply job</router-link-->
@@ -108,7 +108,7 @@
         <button
           type="button"
           class="btn btn-primary"
-          @click.prevent="applyJob"
+          @click.prevent="chooseCV"
         >
           Nộp đơn
         </button>
@@ -143,6 +143,7 @@
                 <button
                   @click.prevent="accept"
                   class="btn btn-common log-btn"
+                  data-bs-dismiss="modal"
                 >
                   Xác nhận
                 </button>
@@ -169,6 +170,74 @@
                 >
                   Xác nhận
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+            class="modal fade"
+            id="noCV"
+            tabindex="-1"
+            aria-labelledby="saveJobMessageLabel"
+            aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <ul class="body-desc">
+                  <li>Bạn chưa có Cv nào. Hãy tạo CV mới ở trang hồ sơ</li>
+                </ul>
+                <button
+                    class="btn btn-common log-btn"
+                    data-bs-dismiss="modal"
+                >
+                  Xác nhận
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+            class="modal fade"
+            id="chooseCV"
+            tabindex="-1"
+            aria-labelledby="saveJobMessageLabel"
+            aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div class="col-md-12 mt-30 ov">
+                  <label class="profile-title">Vui Lòng chọn cv bạn muốn nộp</label>
+                  <div class="left list-cv">
+                    <button v-for="(cv, index) in listCV" v-bind:key="index" class="btn btn-light col-lg-12 col-md-12 col-xs-12" @click.prevent="applyJob(cv.id)">
+                      <div class="content">
+                        <h3>
+                          <a>{{ cv.cvName }}</a>
+                        </h3>
+                        <span class="full-time mb-3" v-if="cv.workingForm == 1"> Full time </span>
+                        <span class="part-time mb-3" v-if="cv.workingForm != 1"> Part time </span>
+                        <h6>
+                          Mức lương tối thiểu : {{ cv.desiredSalary }} VNĐ
+                        </h6>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <div class="mt-5">
+                  <button
+                      class="btn btn-common log-btn"
+                      @click.prevent="accept"
+                  >
+                    Xác nhận
+                  </button>
+                  <button
+                      class="btn btn-common log-btn"
+                      data-bs-dismiss="modal"
+                  >
+                    Huỷ bỏ
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -202,6 +271,7 @@ export default {
       studentProfile: "",
       isShowInfo: false,
       token: "",
+      listCV: []
     };
   },
   components: {},
@@ -213,6 +283,19 @@ export default {
     if (this.token) {
       this.isShowInfo = true;
     }
+
+    axios
+        .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/self", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        })
+        .then((response) => {
+          if (response.data.data !== null) {
+            this.listCV = response.data.data.listCv;
+          }
+        });
+
     axios
       .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/" + this.$route.query.id)
       .then((response) => {
@@ -221,20 +304,32 @@ export default {
   },
   methods: {
     // method ko nên dùng async
-    applyJob() {
+    chooseCV() {
+      if (this.listCV.length == 0) {
+        // eslint-disable-next-line no-undef
+        $("#noCV").modal("show");
+      } else {
+        // eslint-disable-next-line no-undef
+        $("#chooseCV").modal("show");
+      }
+    },
+    applyJob(idCV) {
       if (this.token) {
         const header = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${this.token}`,
         };
         const data = {
-          id: Number(this.$route.query.id),
+          jobId: Number(this.$route.query.id),
+          cvId: Number(idCV),
         };
         axios
           .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/apply", data, {
             headers: header,
           })
           .then(() => {
+            // eslint-disable-next-line no-undef
+            $("#chooseCV").modal("hide");
             // eslint-disable-next-line no-undef
             $("#exampleModal").modal("show");
           })
@@ -258,7 +353,6 @@ export default {
         const data = {
           jobId: Number(this.$route.query.id),
         };
-        console.log(data);
         axios
             .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/save", data, {
               headers: header,
@@ -268,7 +362,6 @@ export default {
               $("#saveJobMessage").modal("show");
             })
             .catch((e) => {
-              console.log(e.response);
               const { message } = e.response.data;
               alert(message.toString());
             });

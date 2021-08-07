@@ -18,6 +18,8 @@ import RecruiterRegister from '../components/views/RecruiterRegister.vue'
 import RecruiterProfile from '../components/views/RecruiterProfile.vue'
 import RecruiterLogin from '../components/views/RecruiterLogin.vue'
 import RecruiterPostJob from '../components/views/RecruiterPostJob.vue'
+import StudentCreateCV from "../components/views/StudentCreateCV"
+import RecruiterCompanyCreate from "../components/views/RecruiterCompanyCreateOrEdit";
 
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -90,7 +92,15 @@ const router = new VueRouter({
     {
       path: '/detail-cv',
       component: StudentDetailCV,
-    }
+    },
+    {
+      path: '/create-cv',
+      component: StudentCreateCV,
+    },
+    {
+      path: '/company',
+      component: RecruiterCompanyCreate,
+    },
   ]
 })
 export default router

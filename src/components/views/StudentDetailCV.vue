@@ -32,35 +32,47 @@
         <div class="container rounded-bottom bg-light">
           <div class="row pl-lg-5 pt-md-0 pt-sm-2">
             <div class="col-md-6 py-md-4">
+              <div class="d-flex flex-row">
+                <div class="btn border-primary text-primary selected-tab">
+                  <router-link :to="{path:'create-cv', query:{id:id}}">
+                    Cập nhật thông tin CV</router-link
+                  >
+                </div>
+              </div>
+              <div class="d-flex flex-row">
+                <div class="btn border-danger text-danger delete-tab">
+                  <a href="" @click.prevent="deleteCV">Xoá CV</a>
+                </div>
+              </div>
               <div class="left">
                 <div class="row mt-2">
                   <div class="col-md-12">
                     <label class="labels"
-                    >Họ & tên: Nguyễn Thị Kiều Linh</label
+                    >Tên CV: {{ studentCv.cvName }}</label
                     >
-                  </div>
-                  <div class="col-md-8">
-                    <label class="labels">Giới tính: Nữ</label>
-                  </div>
-                  <div class="col-md-8">
-                    <label class="labels">Ngày sinh: 09/12/1999</label>
                   </div>
                   <div class="col-md-12">
                     <label class="labels"
-                    >Gmail: LinhNTK@gmail.com
-                    </label>
+                    >Họ & tên: {{ studentCv.name }}</label
+                    >
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Trường học: Đại Học FPT Hà Nội</label>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="labels">Kinh nghiệm: 1 năm</label>
+                    <label class="labels">Giới tính: {{ studentCv.sex ? "Nam" : "Nữ" }}</label>
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Ngoại ngữ: 700 TOEIC</label>
+                    <label class="labels">Ngày sinh: {{ studentCv.dob }}</label>
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Mức lương mong muốn: 10,000,000 VNĐ</label>
+                    <label class="labels">Trường học: {{ studentCv.school }}</label>
+                  </div>
+                  <div class="col-md-12">
+                    <label class="labels">Kinh nghiệm: {{ studentCv.experience }}</label>
+                  </div>
+                  <div class="col-md-12">
+                    <label class="labels">Ngoại ngữ: {{ studentCv.foreignLanguage }}</label>
+                  </div>
+                  <div class="col-md-12">
+                    <label class="labels">Mức lương mong muốn: {{ studentCv.desiredSalaryMinimum }} VNĐ</label>
                   </div>
                 </div>
               </div>
@@ -115,6 +127,7 @@ export default {
   data() {
     return {
       studentProfile: [],
+      id: [],
       studentCv: {},
       list: [],
       job: {
@@ -124,14 +137,21 @@ export default {
     };
   },
 
+  methods: {
+    deleteCV() {
+      // call axios api delete cv
+    },
+  },
+
   mounted() {
+    this.id = this.$route.query.id;
     if (localStorage.getItem("studentProfile")) {
       this.studentProfile = JSON.parse(localStorage.getItem("studentProfile"));
     }
     if (localStorage.getItem("token")) {
       this.token = localStorage.getItem("token");
     }
-    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv",
+    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/" + this.$route.query.id,
         {
           headers: {
             Authorization: `Bearer ${this.token}`,

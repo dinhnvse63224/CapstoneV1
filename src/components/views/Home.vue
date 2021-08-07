@@ -61,7 +61,7 @@
                           <label class="styled-select">
                             <select v-model="categoryCode">
                               <option :value="null">Ngành nghề</option>
-                              <option v-for="(category, index) in listCategories" v-bind:key="index" v-bind:category="category"> {{category.value}} </option>
+                              <option v-for="(category, index) in listCategories" v-bind:key="index" v-bind:category="category" :value="category.code"> {{category.value}} </option>
                             </select>
                           </label>
                         </div>
@@ -218,16 +218,26 @@ export default {
   },
   methods: {
     search() {
+      let data = {
+        keyword: this.keyword,
+        location: this.location,
+        categoryCode: this.categoryCode,
+        workingForm: this.workingForm,
+      }
+      console.log(data);
       axios
-        .post("https://localhost:44315/search", {
+        .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/search", {
           keyword: this.keyword,
           location: this.location,
           categoryCode: this.categoryCode,
           workingForm: this.workingForm,
         })
         .then((response) => {
+          console.log(response.data);
           this.list = response.data.data;
-        });
+        }).catch((e) => {
+        console.log(e.response);
+      });
     },
   },
   // mounted () {
@@ -244,6 +254,7 @@ export default {
     });
     axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories").then((response) => {
       this.listCategories = response.data.data;
+      console.log(this.listCategories);
     });
   },
 

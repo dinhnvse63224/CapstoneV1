@@ -102,6 +102,13 @@
                       >
                     </div>
                   </div>
+                  <div class="d-flex flex-row">
+                    <div class="btn border-primary text-primary selected-tab">
+                      <router-link to="/create-cv">
+                        Tạo mới CV</router-link
+                      >
+                    </div>
+                  </div>
                   <div class="left">
                     <label class="profile-title">Thông tin của bạn</label>
                     <div class="row mt-2">
@@ -132,6 +139,23 @@
                       </div>
                       <div class="col-md-12">
                         <label class="labels">Mức lương mong muốn: {{ studentCv.desiredSalaryMinimum }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mt-30 ov">
+                  <label class="profile-title">Danh sách CV của bạn</label>
+                  <div class="left list-cv">
+                    <div v-for="(cv, index) in listCV" v-bind:key="index" class="col-lg-12 col-md-12 col-xs-12 cv-info">
+                      <div class="content">
+                        <h3>
+                          <router-link :to="{path:'detail-cv', query:{id:cv.id}}">{{ cv.cvName }}</router-link>
+                        </h3>
+                        <span class="full-time mb-3" v-if="cv.workingForm == 1"> Full time </span>
+                        <span class="part-time mb-3" v-if="cv.workingForm != 1"> Part time </span>
+                        <h5>
+                          Mức lương tối thiểu : {{ cv.desiredSalary }} VNĐ
+                        </h5>
                       </div>
                     </div>
                   </div>
@@ -285,6 +309,7 @@ export default {
   data() {
     return {
       studentProfile: [],
+      listCV: [],
       studentCv: {},
       list: [],
       listSaved: [],
@@ -302,6 +327,18 @@ export default {
     if (localStorage.getItem("token")) {
       this.token = localStorage.getItem("token");
     }
+    axios
+        .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/self", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        })
+        .then((response) => {
+          if (response.data.data !== null) {
+            this.listCV = response.data.data.listCv;
+          }
+        });
+
     axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv",
         {
           headers: {
@@ -311,6 +348,7 @@ export default {
     ).then(response => {
       this.studentCv = response.data.data;
     })
+
     axios
       .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/applied-jobs", {
         headers: {
@@ -318,7 +356,9 @@ export default {
         },
       })
       .then((response) => {
-        this.list = response.data.data;
+        if (response.data.data !== null) {
+          this.list = response.data.data;
+        }
       });
 
     axios
@@ -328,11 +368,27 @@ export default {
         },
       })
       .then((response) => {
-        this.listSaved = response.data.data;
+        if (response.data.data !== null) {
+          this.listSaved = response.data.data;
+        }
       });
   },
 };
 </script>
 
 <style>
+.cv-info {
+  background: #fff;
+  margin: 15px 0;
+  border-radius: 4px;
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  box-shadow: 0px 0px 14px rgb(191 191 191 / 24%);
+}
+
+.list-cv {
+  height: 500px;
+  overflow: auto;
+}
 </style>

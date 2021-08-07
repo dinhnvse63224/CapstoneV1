@@ -141,7 +141,11 @@ export default {
             username: this.username,
             password: this.password,
             confirmPassword: this.confirmPassword,
-            avatar: this.avatar
+            avatar: this.avatar,
+            firstname: this.fullname,
+            lastname: this.fullname
+        }).catch((e) => {
+          console.log(e.response);
         });
 
         this.$router.push('/recruiter-login');

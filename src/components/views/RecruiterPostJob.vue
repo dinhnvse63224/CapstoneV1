@@ -163,12 +163,7 @@
                   <label for="exampleFormControlTextarea2"
                     >Mô tả công viêc*</label
                   >
-                  <textarea
-                    class="form-control rounded-0"
-                    v-model="description"
-                    id="exampleFormControlTextarea2"
-                    rows="5"
-                  ></textarea>
+                  <vue-editor v-model="description"></vue-editor>
                 </div>
               </div>
             </div>
@@ -178,12 +173,7 @@
                   <label for="exampleFormControlTextarea2"
                     >Yêu cầu công việc*</label
                   >
-                  <textarea
-                    class="form-control rounded-0"
-                    v-model="requirement"
-                    id="exampleFormControlTextarea2"
-                    rows="5"
-                  ></textarea>
+                  <vue-editor v-model="requirement"></vue-editor>
                 </div>
               </div>
             </div>
@@ -191,12 +181,7 @@
               <div class="col-md-12 col-lg-10 col-12">
                 <div class="form-group">
                   <label for="exampleFormControlTextarea2">Quyền lợi*</label>
-                  <textarea
-                    class="form-control rounded-0"
-                    v-model="offer"
-                    id="exampleFormControlTextarea2"
-                    rows="5"
-                  ></textarea>
+                  <vue-editor v-model="offer"></vue-editor>
                 </div>
                 <div class="mb-2 mt-4">
                   <div
@@ -272,6 +257,7 @@
 
 <script>
 import axios from "axios";
+import { VueEditor } from "vue2-editor";
 export default {
   data() {
     return {
@@ -293,7 +279,7 @@ export default {
     };
   },
   components: {
-    
+    VueEditor
   },
 
   mounted() {
