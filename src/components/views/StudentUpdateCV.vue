@@ -170,6 +170,7 @@ export default {
       };
       const data = {
         name: this.name,
+        cvName: this.name,
         sex: this.sex,
         dob: this.dob,
         school: this.school,
