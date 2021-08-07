@@ -128,18 +128,18 @@
                           >Gmail: {{ studentProfile.gmail }}
                         </label>
                       </div>
-                      <div class="col-md-12">
-                        <label class="labels">Trường học: {{ studentCv.school }}</label>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="labels">Kinh nghiệm: {{ studentCv.experience }}</label>
-                      </div>
-                      <div class="col-md-12">
-                        <label class="labels">Ngoại ngữ: {{ studentCv.foreignLanguage }}</label>
-                      </div>
-                      <div class="col-md-12">
-                        <label class="labels">Mức lương mong muốn: {{ studentCv.desiredSalaryMinimum }}</label>
-                      </div>
+<!--                      <div class="col-md-12">-->
+<!--                        <label class="labels">Trường học: {{ studentCv.school }}</label>-->
+<!--                      </div>-->
+<!--                      <div class="col-md-6">-->
+<!--                        <label class="labels">Kinh nghiệm: {{ studentCv.experience }}</label>-->
+<!--                      </div>-->
+<!--                      <div class="col-md-12">-->
+<!--                        <label class="labels">Ngoại ngữ: {{ studentCv.foreignLanguage }}</label>-->
+<!--                      </div>-->
+<!--                      <div class="col-md-12">-->
+<!--                        <label class="labels">Mức lương mong muốn: {{ studentCv.desiredSalaryMinimum }}</label>-->
+<!--                      </div>-->
                     </div>
                   </div>
                 </div>
