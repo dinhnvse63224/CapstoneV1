@@ -25,25 +25,20 @@
                         <tr class="align-self-center">
                           <th><span>Người ứng tuyển</span></th>
                           <th><span>Ngày ứng tuyển</span></th>
-                          <th><span>Công việc</span></th>
                           <th><span>Email</span></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(list, index) in list" v-bind:key="index" v-bind:list="list" v-on:click="redirectToDetailCV(id, list.id)">
+                        <tr v-for="(cv, index) in list" v-bind:key="index" v-on:click="redirectToDetailCV(index)">
                           <td>
-                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="">
-                            <a href="#" class="user-link">George Clooney</a>
-                            <span class="user-subhead">Member</span>
+                            <img v-if="cv.cv.avatar != ''" :src="cv.cv.avatar" alt="" width="200" height="200">
+                            <span class="user-subhead">{{ cv.cv.name }}</span>
                           </td>
                           <td>
                             <!--                                            {{list.}}-->
                           </td>
                           <td>
-                            Front end
-                          </td>
-                          <td>
-                            <a href="#">Testbrando.com</a>
+                            <a href="#">{{ cv.gmail }}</a>
                           </td>
                           <td style="width: 20%;">
                             <a href="#" class="table-link">
@@ -99,8 +94,8 @@ export default {
       const count = this.list.filter((obj) => obj.status == 1).length;
       return count;
     },
-    redirectToDetailCV(id, cv_id) {
-      this.$router.push({ path: 'detail-cv', query: { id: id, cv_id: cv_id } })
+    redirectToDetailCV(key) {
+      this.$router.push({ path: 'recruiter-detail-cv', query: { id: this.$route.query.id, key: key } })
     }
   },
   mounted() {
@@ -122,8 +117,7 @@ export default {
             },
           }
         ).then((response) => {
-       console.log(response.data);
-       this.list = [1, 2, 3];
+       this.list = response.data.data;
      })
   },
 };

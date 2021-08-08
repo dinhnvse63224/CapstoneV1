@@ -32,18 +32,6 @@
         <div class="container rounded-bottom bg-light">
           <div class="row pl-lg-5 pt-md-0 pt-sm-2">
             <div class="col-md-6 py-md-4">
-              <div class="d-flex flex-row">
-                <div class="btn border-primary text-primary selected-tab">
-                  <router-link :to="{path:'create-cv', query:{id:id}}">
-                    Cập nhật thông tin CV</router-link
-                  >
-                </div>
-              </div>
-              <div class="d-flex flex-row">
-                <div class="btn border-danger text-danger delete-tab">
-                  <a href="" @click.prevent="deleteCV">Xoá CV</a>
-                </div>
-              </div>
               <div class="left">
                 <div class="row mt-2">
                   <div class="col-md-12">
@@ -66,7 +54,7 @@
                     <label class="labels">Trường học: {{ studentCv.school }}</label>
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Kỹ năng: <span v-html="studentCv.skill"></span></label>
+                    <label class="labels">Kinh nghiệm: {{ studentCv.skill }}</label>
                   </div>
                   <div class="col-md-12">
                     <label class="labels">Kinh nghiệm: {{ studentCv.experience }}</label>
@@ -154,24 +142,19 @@ export default {
     if (localStorage.getItem("token")) {
       this.token = localStorage.getItem("token");
     }
-    axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/" + this.$route.query.id,
-        {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        }
-    ).then(response => {
-      this.studentCv = response.data.data;
-    })
+    console.log(this.$route.query.id);
     axios
-        .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/applied-jobs", {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        })
-        .then((response) => {
-          this.list = response.data.data;
-        });
+        .get(
+            "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/" + this.$route.query.id + "/applied-students",
+            {
+              headers: {
+                Authorization: `Bearer ${this.token}`,
+              },
+            }
+        ).then((response) => {
+      console.log(response.data.data);
+      this.studentCv = response.data.data[this.$route.query.key].cv;
+    })
   },
 };
 </script>

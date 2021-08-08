@@ -61,7 +61,7 @@
             <div class="row mt-3">
               <div class="col-md-8">
                 <label class="labels">Kỹ năng*</label>
-                <input type="text" class="form-control" v-model="skill" />
+                <vue-editor v-model="skill"></vue-editor>
               </div>
             </div>
             <div class="row mt-3">
@@ -127,6 +127,7 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import { VueEditor } from "vue2-editor";
 export default {
   data() {
     return {
@@ -143,6 +144,10 @@ export default {
       isError: false,
       isCreated: false,
     };
+  },
+
+  components: {
+    VueEditor
   },
 
   created() {

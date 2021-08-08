@@ -218,7 +218,7 @@
                     <label class="labels">Website: {{company.website}}</label>
                   </div>
                   <div class="col-md-8">
-                    <label class="labels">Mô tả: {{company.description}}</label>
+                    <label class="labels">Mô tả: <span v-html="company.description"></span></label>
                   </div>
                   <div class="col-md-8">
                     <label class="labels">Chỉnh sửa avarta công ty
@@ -295,32 +295,31 @@ export default {
 
     axios
         .get(
-          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/posted-jobs",
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
-          }
+            "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/posted-jobs",
+            {
+              headers: {
+                Authorization: `Bearer ${this.token}`,
+              },
+            }
         ).then((response) => {
-          if (response.data.data !== null) {
-            this.list = response.data.data;
-          }
-        })
+      if (response.data.data !== null) {
+        this.list = response.data.data;
+      }
+    })
     axios.get(
-          "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/company/self",
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
-          }
-        ).then((response) => {
-          this.company = response.data.data;
-      console.log(this.company);
+        "http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/company/self",
+        {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+    ).then((response) => {
+      this.company = response.data.data;
     }).catch((e) => {
-          if (e.response.status === 404) {
-            this.hasCompany = false;
-            console.log(this.hasCompany);
-          }
+      if (e.response.status === 404) {
+        this.hasCompany = false;
+        console.log(this.hasCompany);
+      }
     })
   },
 };

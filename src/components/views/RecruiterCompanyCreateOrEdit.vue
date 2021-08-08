@@ -49,7 +49,7 @@
             <div class="row mt-3">
               <div class="col-md-12">
                 <label class="labels">Mô tả công ty</label>
-                <input type="text" class="form-control" v-model="description" />
+                <vue-editor v-model="description"></vue-editor>
               </div>
             </div>
            
@@ -71,6 +71,8 @@
 
 <script>
 import axios from "axios";
+import { VueEditor } from "vue2-editor";
+
 export default {
   data() {
     return {
@@ -83,6 +85,11 @@ export default {
       isCreated: false
     };
   },
+
+  components: {
+    VueEditor
+  },
+
   methods: {
     updateCompany() {
       const response = this.isCreated ? axios.put('http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/recruiter/company/update', {
