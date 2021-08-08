@@ -85,11 +85,7 @@
             <div class="row mt-3">
               <div class="col-md-7">
                 <label class="labels">Mức lương mong muốn*</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="desiredSalaryMinimum"
-                />
+                <vue-numeric class="form-control" separator="," v-model="desiredSalaryMinimum"></vue-numeric>
               </div>
             </div>
             <div class="row mt-3">
@@ -128,6 +124,7 @@
 import axios from "axios";
 import moment from "moment";
 import { VueEditor } from "vue2-editor";
+import VueNumeric from 'vue-numeric'
 export default {
   data() {
     return {
@@ -147,7 +144,8 @@ export default {
   },
 
   components: {
-    VueEditor
+    VueEditor,
+    VueNumeric
   },
 
   created() {
@@ -220,6 +218,7 @@ export default {
           workingForm: this.workingForm,
         };
       }
+       console.log(data);
        const response = this.isCreated ? axios
                .put(`http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/update`, data, {
                  headers: header,

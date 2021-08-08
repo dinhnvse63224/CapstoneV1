@@ -38,13 +38,7 @@
                 </div>
                 <div class="form-group">
                   <label for="time"> Mức Lương Tối Thiểu(VNĐ)*</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="salaryMin"
-                    id="time"
-                    placeholder=""
-                  />
+                  <vue-numeric id="time" class="form-control" separator="," v-model="salaryMin"></vue-numeric>
                 </div>
                 <div class="form-group">
                   <label for="inputEmail4">Ngành nghề*</label>
@@ -137,13 +131,7 @@
                 </div>
                 <div class="form-group">
                   <label for="time"> Mức Lương Tối Đa(VNĐ)*</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="salaryMax"
-                    id="time"
-                    placeholder=""
-                  />
+                  <vue-numeric id="time" class="form-control" separator="," v-model="salaryMax"></vue-numeric>
                 </div>
                 <div class="form-group">
                   <label for="skill">Số người cần tuyển*</label>
@@ -258,6 +246,7 @@
 <script>
 import axios from "axios";
 import { VueEditor } from "vue2-editor";
+import VueNumeric from 'vue-numeric'
 export default {
   data() {
     return {
@@ -279,7 +268,8 @@ export default {
     };
   },
   components: {
-    VueEditor
+    VueEditor,
+    VueNumeric
   },
 
   mounted() {
