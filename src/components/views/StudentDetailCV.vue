@@ -63,6 +63,9 @@
                     <label class="labels">Ngày sinh: {{ studentCv.dob }}</label>
                   </div>
                   <div class="col-md-12">
+                    <label class="labels">Số điện thoại: {{ studentCv.phone }}</label>
+                  </div>
+                  <div class="col-md-12">
                     <label class="labels">Trường học: {{ studentCv.school }}</label>
                   </div>
                   <div class="col-md-12">
@@ -142,7 +145,16 @@ export default {
 
   methods: {
     deleteCV() {
-      // call axios api delete cv
+      axios.delete("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/" + this.$route.query.id + "/remove",
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+      ).then(() => {
+        this.$router.push('/student-profile');
+        window.location.reload();
+      })
     },
   },
 

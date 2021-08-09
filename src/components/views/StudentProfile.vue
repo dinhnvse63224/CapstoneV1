@@ -105,7 +105,7 @@
                   <div class="d-flex flex-row">
                   </div>
                   <div id="latest-jobs" class="section bg-gray">
-                    <div class="container">
+                    <div class="container list-job">
                       <div class="section-header">
                         <h2 class="section-title">GỢI Ý VIỆC LÀM</h2>
                       </div>
@@ -377,8 +377,8 @@ export default {
   box-shadow: 0px 0px 14px rgb(191 191 191 / 24%);
 }
 
-.list-cv {
-  height: 500px;
+.list-cv, .list-job {
+  height: 600px;
   overflow: auto;
 }
 </style>
