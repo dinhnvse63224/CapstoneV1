@@ -42,37 +42,17 @@
                 </div>
                 <div class="form-group">
                   <label for="inputEmail4">Ngành nghề*</label>
-                  <!-- <multiselect
-                    v-model="categories"
-                    :options="options"
-                    :multiple="true"
-                    :close-on-select="false"
-                    :clear-on-select="false"
-                    :preserve-search="true"
-                    label="code"
-                    track-by="code"
-                    :preselect-first="true"
+                  <multiselect
+                      v-model="multiCategory"
+                      :options="list"
+                      :multiple="true"
+                      :close-on-select="true"
+                      placeholder=""
+                      label="value"
+                      track-by="code"
+                      class="form-control w-auto"
                   >
-                    <template
-                      slot="selection"
-                      slot-scope="{ values, isOpen }"
-                      ><span
-                        class="multiselect__single"
-                        v-if="values.length &amp;&amp; !isOpen"
-                        >{{ values.length }} options selected</span
-                      ></template
-                    >
-                  </multiselect> -->
-                  <select v-model="categories" class="form-control" multiple>
-                    <option
-                      v-for="(categories, index) in list"
-                      v-bind:key="index"
-                      v-bind:categories="categories"
-                      :value="categories.code"
-                    >
-                      {{ categories.value }}
-                    </option>
-                  </select>
+                  </multiselect>
                 </div>
                 <div class="form-group">
                   <label class="labels" for="sex">Yêu cầu giới tính</label
@@ -246,7 +226,9 @@
 <script>
 import axios from "axios";
 import { VueEditor } from "vue2-editor";
-import VueNumeric from 'vue-numeric'
+import VueNumeric from 'vue-numeric';
+import Multiselect from 'vue-multiselect'
+
 export default {
   data() {
     return {
@@ -264,19 +246,26 @@ export default {
       salaryMax: "",
       list: [],
       categories: [],
+      multiCategory: [],
       token: "",
+      options: [
+        { name: 'Vue.js', language: 'JavaScript' },
+        { name: 'Rails', language: 'Ruby' },
+        { name: 'Sinatra', language: 'Ruby' },
+        { name: 'Laravel', language: 'PHP', $isDisabled: true }
+      ],
       customToolbar: [[{ list: "ordered" }, { list: "bullet" }, { list: "check" }]],
     };
   },
   components: {
     VueEditor,
-    VueNumeric
+    VueNumeric,
+    Multiselect
   },
 
   mounted() {
     axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories").then((response) => {
       this.list = response.data.data;
-      console.log(this.list);
 
     });
   },
@@ -294,6 +283,9 @@ export default {
         "Content-Type": "application/json",
         Authorization: `Bearer ${this.token}`,
       };
+      this.multiCategory.forEach((cate) => {
+        this.categories.push(cate.code);
+      })
       const data = {
         name: this.name,
         workingForm: this.workingForm,
@@ -322,6 +314,6 @@ export default {
   },
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 </style>
