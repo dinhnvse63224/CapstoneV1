@@ -49,7 +49,7 @@
             <div class="row mt-3">
               <div class="col-md-12">
                 <label class="labels">Mô tả công ty</label>
-                <vue-editor v-model="description"></vue-editor>
+                <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
               </div>
             </div>
            

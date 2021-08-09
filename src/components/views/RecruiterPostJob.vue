@@ -63,7 +63,7 @@
                       ></template
                     >
                   </multiselect> -->
-                  <select v-model="categories" class="form-control">
+                  <select v-model="categories" class="form-control" multiple>
                     <option
                       v-for="(categories, index) in list"
                       v-bind:key="index"
@@ -151,7 +151,7 @@
                   <label for="exampleFormControlTextarea2"
                     >Mô tả công viêc*</label
                   >
-                  <vue-editor v-model="description"></vue-editor>
+                  <vue-editor v-model="description" :editorToolbar="customToolbar"></vue-editor>
                 </div>
               </div>
             </div>
@@ -161,7 +161,7 @@
                   <label for="exampleFormControlTextarea2"
                     >Yêu cầu công việc*</label
                   >
-                  <vue-editor v-model="requirement"></vue-editor>
+                  <vue-editor v-model="requirement" :editorToolbar="customToolbar"></vue-editor>
                 </div>
               </div>
             </div>
@@ -169,7 +169,7 @@
               <div class="col-md-12 col-lg-10 col-12">
                 <div class="form-group">
                   <label for="exampleFormControlTextarea2">Quyền lợi*</label>
-                  <vue-editor v-model="offer"></vue-editor>
+                  <vue-editor v-model="offer" :editorToolbar="customToolbar"></vue-editor>
                 </div>
                 <div class="mb-2 mt-4">
                   <div
@@ -265,6 +265,7 @@ export default {
       list: [],
       categories: [],
       token: "",
+      customToolbar: [[{ list: "ordered" }, { list: "bullet" }, { list: "check" }]],
     };
   },
   components: {
@@ -275,6 +276,7 @@ export default {
   mounted() {
     axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories").then((response) => {
       this.list = response.data.data;
+      console.log(this.list);
 
     });
   },
@@ -305,8 +307,9 @@ export default {
         quantity: this.quantity,
         description: this.description,
         salaryMax: this.salaryMax,
-        categories: [this.categories],
+        categories: this.categories,
       };
+      console.log(data);
       await console.log(data);
       await axios
         .post("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/create", data, {

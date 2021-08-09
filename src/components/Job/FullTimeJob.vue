@@ -11,7 +11,7 @@
         <div class="tags">
           <i class="lni-map-marker"></i> Quận {{ job.location }}
         </div>
-        <div class="tag mb-3"><i class="lni-tag"></i> <span v-html="job.requirement"></span></div>
+        <div class="tag mb-3">{{ job.createDate }}</div>
         <span class="full-time"> Full time </span>
       </div>
     </div>

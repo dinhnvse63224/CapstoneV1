@@ -69,7 +69,7 @@
                     <label class="labels">Kỹ năng: <span v-html="studentCv.skill"></span></label>
                   </div>
                   <div class="col-md-12">
-                    <label class="labels">Kinh nghiệm: {{ studentCv.experience }}</label>
+                    <label class="labels">Kinh nghiệm: <span v-html="studentCv.experience"></span></label>
                   </div>
                   <div class="col-md-12">
                     <label class="labels">Ngoại ngữ: {{ studentCv.foreignLanguage }}</label>

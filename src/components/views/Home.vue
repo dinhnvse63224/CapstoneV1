@@ -98,39 +98,38 @@
 
     <!-- Latest Section Start -->
     <section id="latest-jobs" class="section bg-gray">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">VIỆC LÀM MỚI NHẤT</h2>
+      <div class="row">
+        <div class="col-md-2">
+          <img src="#" alt="" width="100%">
         </div>
-        <ListJob v-bind:list="list" />
+        <div class="col-md-8">
+          <div class="container">
+            <div class="section-header">
+              <h2 class="section-title">VIỆC LÀM MỚI NHẤT</h2>
+              <p v-if="allJob.length === 0"> Không có công việc nào phù hợp </p>
+            </div>
+            <ListJob v-bind:list="list" />
+          </div>
+        </div>
+        <div class="col-md-2">
+          <img src="#" alt="" width="100%">
+        </div>
       </div>
 
       <!-- pagination -->
       <center>
         <div class="pagination_rounded">
-          <ul>
-            <li>
-              <a href="#" class="prev">
-                <i class="fa fa-angle-left" aria-hidden="true"></i> Trước
-              </a>
-            </li>
-            <li><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="hidden-xs"><a href="#"></a></li>
-            <li class="visible-xs"><a href="#">...</a></li>
-            <li><a href="#"></a></li>
-            <li>
-              <a href="#" class="next">
-                Sau <i class="fa fa-angle-right" aria-hidden="true"></i
-              ></a>
-            </li>
-          </ul>
+          <paginate
+              :page-count="pageCount"
+              :page-range="3"
+              :margin-pages="2"
+              :click-handler="clickCallback"
+              :prev-text="' Trước '"
+              :next-text="' Sau '"
+              :container-class="'pagination'"
+              :active-class="'active'"
+              :page-class="'page-item'">
+          </paginate>
         </div>
       </center>
     </section>
@@ -196,12 +195,15 @@
 <script>
 import ListJob from "../Job/ListJob.vue";
 import axios from "axios";
+import Paginate from 'vuejs-paginate'
 
 export default {
   data() {
     return {
       majors: [],
       list: [],
+      pageCount : 0,
+      allJob: [],
       keyword: null,
       location: null,
       categoryCode: null,
@@ -215,6 +217,7 @@ export default {
   },
   components: {
     ListJob,
+    Paginate
   },
   methods: {
     search() {
@@ -233,11 +236,19 @@ export default {
           workingForm: this.workingForm,
         })
         .then((response) => {
-          console.log(response.data);
-          this.list = response.data.data;
+          this.allJob = response.data.data === null ? [] : response.data.data;
+          console.log(this.allJob.length);
+          this.pageCount = Math.ceil(this.allJob.length / 8);
+          this.list = this.paginate(this.allJob, 8, 1);
         }).catch((e) => {
         console.log(e.response);
       });
+    },
+    paginate(array, page_size, page_number) {
+      return array.slice((page_number - 1) * page_size, page_number * page_size);
+    },
+    clickCallback(number) {
+      this.list = this.paginate(this.allJob, 8, number);
     },
   },
   // mounted () {
@@ -250,11 +261,12 @@ export default {
   // }
   mounted() {
     axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job").then((response) => {
-      this.list = response.data.data;
+      this.allJob = response.data.data;
+      this.pageCount = Math.ceil(this.allJob.length / 8);
+      this.list = this.paginate(this.allJob, 8, 1);
     });
     axios.get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/categories").then((response) => {
       this.listCategories = response.data.data;
-      console.log(this.listCategories);
     });
   },
 

@@ -4490,18 +4490,6 @@ a:link {
   line-height: 34px;
 }
 
-.pagination_rounded ul li a {
-  float: left;
-  color: #00bcd4;
-  border-radius: 50%;
-  line-height: 30px;
-  height: 30px;
-  width: 30px;
-  text-align: center;
-  margin-bottom: 40px;
-  border: 1px solid black;
-}
-
 .pagination_rounded .prev i {
   margin-right: 10px;
 }

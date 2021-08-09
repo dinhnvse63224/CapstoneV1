@@ -91,10 +91,10 @@ export default {
     };
   },
   mounted() {
-    if (localStorage.getItem("recruiterProfile")) {
+    if (localStorage.getItem("recruiterProfile") && localStorage.getItem("userLogin") === "recruiter") {
       this.profile = JSON.parse(localStorage.getItem("recruiterProfile"));
     }
-    if (localStorage.getItem("studentProfile")) {
+    if (localStorage.getItem("studentProfile") && localStorage.getItem("userLogin") === "student") {
       this.studentProfile = JSON.parse(localStorage.getItem("studentProfile"));
     }
   },

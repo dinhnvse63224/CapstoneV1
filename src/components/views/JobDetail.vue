@@ -251,6 +251,7 @@
         <div class="section-header">
           <h2 class="section-title">VIỆC LÀM TƯƠNG TỰ</h2>
         </div>
+        <ListJob v-bind:list="jobSuggest" />
       </div>
     </section>
     <!-- Featured Section End -->
@@ -259,6 +260,7 @@
 
 <script>
 import axios from "axios";
+import ListJob from "../Job/ListJob";
 // import ListSuggestJob from "../Job/ListSuggestJob.vue";
 export default {
   data() {
@@ -271,10 +273,13 @@ export default {
       studentProfile: "",
       isShowInfo: false,
       token: "",
-      listCV: []
+      listCV: [],
+      jobSuggest: []
     };
   },
-  components: {},
+  components: {
+    ListJob,
+  },
   mounted() {
     if (localStorage.getItem("studentProfile")) {
       this.studentProfile = JSON.parse(localStorage.getItem("studentProfile"));
@@ -301,6 +306,16 @@ export default {
       .then((response) => {
         this.job = response.data.data;
       });
+
+    axios
+        .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/suggest", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        })
+        .then((response) => {
+          this.jobSuggest = response.data.data;
+        });
   },
   methods: {
     // method ko nên dùng async

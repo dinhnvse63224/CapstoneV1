@@ -83,24 +83,34 @@
       </div>
     </header>
     <section id="latest-jobs" class="section bg-gray">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6 col-md-12 col-xs-12">
-            <div>
-              <h2>Việc làm full time</h2>
-            </div>
-            <div class="container">
-              <ListFullTimeJob v-bind:listJob="listJob" />
+      <div class="row">
+        <div class="col-md-2">
+          <img src="#" alt="" width="100%">
+        </div>
+        <div class="col-md-8">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-xs-12">
+                <div>
+                  <h2>Việc làm full time</h2>
+                </div>
+                <div class="container">
+                  <ListFullTimeJob v-bind:listJob="listJob" />
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12 col-xs-12">
+                <div>
+                  <h2>Việc làm part time</h2>
+                </div>
+                <div class="container">
+                  <ListPartTimeJob v-bind:listJob="listJob" />
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-lg-6 col-md-12 col-xs-12">
-            <div>
-              <h2>Việc làm part time</h2>
-            </div>
-            <div class="container">
-              <ListPartTimeJob v-bind:listJob="listJob" />
-            </div>
-          </div>
+        </div>
+        <div class="col-md-2">
+          <img src="#" alt="" width="100%">
         </div>
       </div>
     </section>

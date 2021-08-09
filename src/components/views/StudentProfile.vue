@@ -103,48 +103,23 @@
                     </div>
                   </div>
                   <div class="d-flex flex-row">
-                    <div class="btn border-primary text-primary selected-tab">
-                      <router-link to="/create-cv">
-                        Tạo mới CV</router-link
-                      >
-                    </div>
                   </div>
-                  <div class="left">
-                    <label class="profile-title">Thông tin của bạn</label>
-                    <div class="row mt-2">
-                      <div class="col-md-6">
-                        <label class="labels"
-                          >Họ & tên: {{ studentCv.name }}</label
-                        >
+                  <div id="latest-jobs" class="section bg-gray">
+                    <div class="container">
+                      <div class="section-header">
+                        <h2 class="section-title">GỢI Ý VIỆC LÀM</h2>
                       </div>
-                      <div class="col-md-8">
-                        <label class="labels">Giới tính: {{ studentCv.sex ? "Nam" : "Nữ" }}</label>
-                      </div>
-                      <div class="col-md-8">
-                        <label class="labels">Ngày sinh: {{ studentCv.dob }}</label>
-                      </div>
-                      <div class="col-md-12">
-                        <label class="labels"
-                          >Gmail: {{ studentProfile.gmail }}
-                        </label>
-                      </div>
-<!--                      <div class="col-md-12">-->
-<!--                        <label class="labels">Trường học: {{ studentCv.school }}</label>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-6">-->
-<!--                        <label class="labels">Kinh nghiệm: {{ studentCv.experience }}</label>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-12">-->
-<!--                        <label class="labels">Ngoại ngữ: {{ studentCv.foreignLanguage }}</label>-->
-<!--                      </div>-->
-<!--                      <div class="col-md-12">-->
-<!--                        <label class="labels">Mức lương mong muốn: {{ studentCv.desiredSalaryMinimum }}</label>-->
-<!--                      </div>-->
+                      <ListJob v-bind:list="jobSuggest" />
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6 mt-30 ov">
                   <label class="profile-title">Danh sách CV của bạn</label>
+                  <div class="btn border-primary text-primary selected-tab">
+                    <router-link to="/create-cv">
+                      Tạo mới CV</router-link
+                    >
+                  </div>
                   <div class="left list-cv">
                     <div v-for="(cv, index) in listCV" v-bind:key="index" class="col-lg-12 col-md-12 col-xs-12 cv-info">
                       <div class="content">
@@ -304,6 +279,7 @@
 
 <script>
 import axios from "axios";
+import ListJob from "../Job/ListJob";
 
 export default {
   data() {
@@ -317,7 +293,11 @@ export default {
         type: Object,
         default: null,
       },
+      jobSuggest: [],
     };
+  },
+  components: {
+    ListJob,
   },
 
   mounted() {
@@ -348,6 +328,16 @@ export default {
     ).then(response => {
       this.studentCv = response.data.data;
     })
+
+    axios
+        .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/suggest", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        })
+        .then((response) => {
+          this.jobSuggest = response.data.data;
+        });
 
     axios
       .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/applied-jobs", {

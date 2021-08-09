@@ -61,13 +61,13 @@
             <div class="row mt-3">
               <div class="col-md-8">
                 <label class="labels">Kỹ năng*</label>
-                <vue-editor v-model="skill"></vue-editor>
+                <vue-editor v-model="skill"  :editorToolbar="customToolbar"></vue-editor>
               </div>
             </div>
             <div class="row mt-3">
-              <div class="col-md-7">
+              <div class="col-md-8">
                 <label class="labels">Kinh nghiệm*</label>
-                <input type="text" class="form-control" v-model="experience" />
+                <vue-editor v-model="experience" :editorToolbar="customToolbar"></vue-editor>
               </div>
             </div>
             <div class="row mt-3">
@@ -140,6 +140,7 @@ export default {
       workingForm: "",
       isError: false,
       isCreated: false,
+      customToolbar: [[{ list: "ordered" }, { list: "bullet" }, { list: "check" }]],
     };
   },
 

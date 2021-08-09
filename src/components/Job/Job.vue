@@ -12,7 +12,7 @@
         <div class="tags">
           <i class="lni-map-marker"></i> Quận {{ job.location }}
         </div>
-        <div class="tag mb-3"><i class="lni-tag"></i> <span class="job-requirement" v-html="job.requirement"></span> </div>
+        <div class="tag mb-3">{{ job.createDate }} </div>
         <span v-if="job.workingForm == 1" class="full-time">Full time</span>
         <span v-else-if="job.workingForm == 2" class="part-time">Part time</span>       
       </div>
@@ -46,14 +46,6 @@ export default {
   width: 90%;
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.job-name {
-  overflow: hidden;
-  width: 90%;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
 </style>

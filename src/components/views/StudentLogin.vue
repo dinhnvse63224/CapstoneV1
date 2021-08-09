@@ -152,6 +152,7 @@ export default {
             .then((response) => {
               const tokenStr = response.data.access_token;
               localStorage.setItem("token", tokenStr);
+              localStorage.setItem("userLogin", "student")
               axios
                 .get("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/self", {
                   headers: {
