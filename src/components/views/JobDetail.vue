@@ -314,7 +314,11 @@ export default {
           },
         })
         .then((response) => {
-          this.jobSuggest = response.data.data;
+          if (response.data.data.length >= 2) {
+            this.jobSuggest = [response.data.data[0], response.data.data[1]]
+          } else {
+            this.jobSuggest = response.data.data;
+          }
         });
   },
   methods: {
