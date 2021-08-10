@@ -155,14 +155,18 @@
                                   <th>Tên công việc</th>
                                   <th>Ngày đăng ký</th>
                                   <th>Trạng thái</th>
+                                  <th>Hành động</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr v-for="(job, index) in list" v-bind:key="index" v-bind:job="job" v-on:click="redirectToListCV(job.id)">
-                                  <td> {{job.name}} </td>
-                                  <td> {{job.createDate}} </td>
-                                  <td v-if="status == 1"> Chưa duyệt </td>
-                                  <td v-else> Đã duyệt </td>
+                                <tr v-for="(job, index) in list" v-bind:key="index" v-bind:job="job">
+                                  <td  v-on:click="redirectToListCV(job.id)"> {{job.name}} </td>
+                                  <td  v-on:click="redirectToListCV(job.id)"> {{job.createDate}} </td>
+                                  <td v-if="status == 1" v-on:click="redirectToListCV(job.id)"> Chưa duyệt </td>
+                                  <td v-else v-on:click="redirectToListCV(job.id)"> Đã duyệt </td>
+                                  <td> <div class="btn border-danger text-danger delete-tab">
+                                    <a href="" @click.prevent="deleteJobCreated(job.id)">Xoá CV</a>
+                                  </div> </td>
                                 </tr>
                               </tbody>
                             </table>
@@ -282,6 +286,20 @@ export default {
     },
     redirectToListCV(id) {
       this.$router.push({ path: 'candidate-list', query: { id: id } })
+    },
+    deleteJobCreated(id) {
+      axios.delete("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/remove-posted-job/" + id,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+      ).then(() => {
+        alert('Xoá công việc thành công!')
+        window.location.reload();
+      }).catch((e) => {
+        console.log(e.response);
+      })
     }
   },
   mounted() {

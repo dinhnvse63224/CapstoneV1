@@ -160,6 +160,7 @@
                                   <th>Tên việc làm</th>
                                   <th>Khu vực</th>
                                   <th>Hình thức</th>
+                                  <th>Hành động</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -172,7 +173,9 @@
                                 <td v-if="workingForm == 1"> Full time </td>
                                 <td v-else> Part time </td>
                                 <td> {{job.location}}</td>
-                                <td></td>
+                                <td> <div class="btn border-danger text-danger delete-tab">
+                                  <a href="" @click.prevent="deleteJobSaved(job.id)">Xoá CV</a>
+                                </div> </td>
                               </tr>
                               </tbody>
                             </table>
@@ -298,6 +301,23 @@ export default {
   },
   components: {
     ListJob,
+  },
+
+  methods: {
+    deleteJobSaved(id) {
+      axios.delete("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/remove-saved-job/" + id,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+      ).then(() => {
+        alert('Xoá công việc thành công!')
+        window.location.reload();
+      }).catch((e) => {
+        console.log(e.response);
+      })
+    }
   },
 
   mounted() {
