@@ -165,7 +165,7 @@
                                   <td v-if="status == 1" v-on:click="redirectToListCV(job.id)"> Chưa duyệt </td>
                                   <td v-else v-on:click="redirectToListCV(job.id)"> Đã duyệt </td>
                                   <td> <div class="btn border-danger text-danger delete-tab">
-                                    <a href="" @click.prevent="deleteJobCreated(job.id)">Xoá CV</a>
+                                    <a href="" @click.prevent="modalConfirm(job.id)">Xoá CV</a>
                                   </div> </td>
                                 </tr>
                               </tbody>
@@ -235,6 +235,35 @@
           </div>
         </div>
       </div>
+      <div
+          class="modal fade"
+          id="confirmDelete"
+          tabindex="-1"
+          aria-labelledby="saveJobMessageLabel"
+          aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <ul class="body-desc">
+                <li>Bạn có chắc chắn muốn xoá công việc này?</li>
+              </ul>
+              <button
+                  class="btn btn-danger log-btn"
+                  @click.prevent="deleteJobCreated"
+              >
+                Xác nhận
+              </button>
+              <button
+                  class="btn btn-common log-btn"
+                  data-bs-dismiss="modal"
+              >
+                Huỷ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -253,7 +282,8 @@ export default {
       },
       hasCompany: true,
       company: "",
-      file: ""
+      file: "",
+      id_job_created: ""
     };
   },
   methods: {
@@ -287,15 +317,21 @@ export default {
     redirectToListCV(id) {
       this.$router.push({ path: 'candidate-list', query: { id: id } })
     },
-    deleteJobCreated(id) {
-      axios.delete("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/remove-posted-job/" + id,
+    modalConfirm(id) {
+      // eslint-disable-next-line no-undef
+      $('#confirmDelete').modal('show');
+      this.id_job_created = id;
+    },
+    deleteJobCreated() {
+      axios.delete("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/remove-posted-job/" + this.id_job_created,
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
             },
           }
       ).then(() => {
-        alert('Xoá công việc thành công!')
+        // eslint-disable-next-line no-undef
+        $('#confirmDelete').modal('hide');
         window.location.reload();
       }).catch((e) => {
         console.log(e.response);

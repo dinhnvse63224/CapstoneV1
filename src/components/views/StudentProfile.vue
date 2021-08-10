@@ -174,7 +174,7 @@
                                 <td v-else> Part time </td>
                                 <td> {{job.location}}</td>
                                 <td> <div class="btn border-danger text-danger delete-tab">
-                                  <a href="" @click.prevent="deleteJobSaved(job.id)">Xoá CV</a>
+                                  <a href="" @click.prevent="modalConfirm(job.id)">Xoá CV</a>
                                 </div> </td>
                               </tr>
                               </tbody>
@@ -240,6 +240,35 @@
           </div>
         </div>
       </div>
+      <div
+          class="modal fade"
+          id="confirmDelete"
+          tabindex="-1"
+          aria-labelledby="saveJobMessageLabel"
+          aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <ul class="body-desc">
+                <li>Bạn có chắc chắn muốn xoá công việc này?</li>
+              </ul>
+              <button
+                  class="btn btn-danger log-btn"
+                  @click.prevent="deleteJobSaved"
+              >
+                Xác nhận
+              </button>
+              <button
+                  class="btn btn-common log-btn"
+                  data-bs-dismiss="modal"
+              >
+                Huỷ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- job suggest -->
@@ -292,6 +321,7 @@ export default {
       studentCv: {},
       list: [],
       listSaved: [],
+      id_job_saved_delete: "",
       job: {
         type: Object,
         default: null,
@@ -304,15 +334,21 @@ export default {
   },
 
   methods: {
-    deleteJobSaved(id) {
-      axios.delete("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/remove-saved-job/" + id,
+    modalConfirm(id) {
+      // eslint-disable-next-line no-undef
+      $('#confirmDelete').modal('show');
+      this.id_job_saved_delete = id;
+    },
+    deleteJobSaved() {
+      axios.delete("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/job/remove-saved-job/" + this.id_job_saved_delete,
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
             },
           }
       ).then(() => {
-        alert('Xoá công việc thành công!')
+        // eslint-disable-next-line no-undef
+        $('#confirmDelete').modal('hide');
         window.location.reload();
       }).catch((e) => {
         console.log(e.response);

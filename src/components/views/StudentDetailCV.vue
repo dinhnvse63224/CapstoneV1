@@ -41,7 +41,7 @@
               </div>
               <div class="d-flex flex-row">
                 <div class="btn border-danger text-danger delete-tab">
-                  <a href="" @click.prevent="deleteCV">Xoá CV</a>
+                  <a href="" @click.prevent="modalConfirm">Xoá CV</a>
                 </div>
               </div>
               <div class="left">
@@ -82,6 +82,35 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+          class="modal fade"
+          id="confirmDelete"
+          tabindex="-1"
+          aria-labelledby="saveJobMessageLabel"
+          aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <ul class="body-desc">
+                <li>Bạn có chắc chắn muốn xoá CV này?</li>
+              </ul>
+              <button
+                  class="btn btn-danger log-btn"
+                  @click.prevent="deleteCV"
+              >
+                Xác nhận
+              </button>
+              <button
+                  class="btn btn-common log-btn"
+                  data-bs-dismiss="modal"
+              >
+                Huỷ
+              </button>
             </div>
           </div>
         </div>
@@ -144,6 +173,10 @@ export default {
   },
 
   methods: {
+    modalConfirm() {
+      // eslint-disable-next-line no-undef
+      $('#confirmDelete').modal('show');
+    },
     deleteCV() {
       axios.delete("http://capstone2021-test.ap-southeast-1.elasticbeanstalk.com/student/cv/" + this.$route.query.id + "/remove",
           {
@@ -152,6 +185,8 @@ export default {
             },
           }
       ).then(() => {
+        // eslint-disable-next-line no-undef
+        $('#confirmDelete').modal('hide');
         this.$router.push('/student-profile');
         window.location.reload();
       })
